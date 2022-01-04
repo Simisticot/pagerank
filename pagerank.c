@@ -2,6 +2,7 @@
 
 int main(int argc, char const *argv[])
 {
-    printf("couku bg\n");
+    //il y a des changements
+    printf("Je me bas un peu avec git\n");
     return 0;
 }
