@@ -9,17 +9,17 @@ t_matrice creer_matrice(int hauteur, int largeur){
 	return matrice;
 }
 
-t_matrice matrice_zero(int hauteur, int largeur){
-	t_matrice matrice_zero;
-	matrice_zero = creer_matrice(hauteur,largeur);
+t_matrice matrice_uniforme(int hauteur, int largeur, float valeur){
+	t_matrice matrice;
+	matrice = creer_matrice(hauteur,largeur);
 	for (int i = 0; i < hauteur; i++)
 	{
 		for (int j = 0; j < largeur; j++)
 		{
-			 matrice_zero.tableau[i][j] = 0;
+			 matrice.tableau[i][j] = valeur;
 		}
 	}
-	return matrice_zero;
+	return matrice;
 }
 
 t_matrice remplir_matrice(t_matrice matrice){
@@ -68,4 +68,28 @@ t_matrice produit_matriciel(t_matrice matrice1, t_matrice matrice2){
 
 void vider_matrice(t_matrice matrice){
 	vider_tableau(matrice.hauteur, matrice.largeur, matrice.tableau);
+}
+
+t_matrice lire_matrice(){
+	int hauteur;
+	int largeur;
+    char name[] = "adjacence";
+    FILE *fichier;
+    fichier = fopen(name, "r");
+    if(fichier == NULL){
+        perror("Erreur à l'ouverture du fichier\n");
+        exit(EXIT_FAILURE);
+    }
+
+	fscanf(fichier,"%d,%d\n",&hauteur, &largeur);
+	t_matrice matrice = creer_matrice(hauteur, largeur);
+
+	for(int i = 0; i < hauteur; i++){
+		for(int j = 0; j < largeur; j++){
+			fscanf(fichier,"%f,",&matrice.tableau[i][j]);
+		}
+	}
+
+    fclose(fichier);
+	return matrice;
 }
