@@ -40,26 +40,17 @@ t_matrice produit_matriciel(t_matrice matrice1, t_matrice matrice2){
 
 	resultat = creer_matrice(matrice1.hauteur, matrice2.largeur);
 
-	printf("début de boucle\n");
 	for (i = 0; i < resultat.hauteur; i++)
 	{
-		printf("boucle hauteur\n");
 		for (j = 0; j < resultat.largeur; j++)
 		{
-			printf("boucle largeur\n");
 			case_courante = 0;
 			for (k = 0; k < matrice1.largeur; k++)
 			{
 				case_courante += matrice1.tableau[i][k]*matrice2.tableau[k][j];
-				printf("i = %d\n",i );
-				printf("j = %d\n",j );
-				printf("k = %d\n",k );
-				printf("%.2f * %.2f = %.2f\n",matrice1.tableau[i][k],matrice2.tableau[k][j],matrice1.tableau[i][k]*matrice2.tableau[k][j] );
 			}
 			
-			printf("case courante = %.2f\n",case_courante );
 			resultat.tableau[i][j] = case_courante;
-			afficher_matrice(matrice2);
 		}
 	}
 
@@ -92,4 +83,80 @@ t_matrice lire_matrice(){
 
     fclose(fichier);
 	return matrice;
+}
+
+double norme_vecteur(t_matrice vecteur){
+	int n,i;
+	double norme;
+	char largeur = 0;
+	if(vecteur.hauteur == 1){
+		n = vecteur.largeur;
+		largeur = 1;
+	}else if(vecteur.largeur == 1){
+		n = vecteur.hauteur;
+	}else{
+		perror("Cette matrice n'est pas un vecteur\n");
+		afficher_matrice(vecteur);
+		exit(EXIT_FAILURE);
+	}
+	if(largeur){
+		for (i = 0; i < n; i++){
+			norme += pow((double)vecteur.tableau[0][i],2);
+		}
+	}else{
+		for (i = 0; i < n; i++){
+			norme += pow((double)vecteur.tableau[i][0],2);
+		}
+	}
+	return sqrt(norme);
+}
+
+t_matrice somme_matricielle(t_matrice a, t_matrice b){
+	if(!(a.hauteur == b.hauteur && a.largeur == b.largeur)){
+		perror("Ces matrices ne sont pas de mêmes dimensions");
+		exit(EXIT_FAILURE);
+	}
+	int i,j;
+	t_matrice somme = creer_matrice(a.hauteur, a.largeur);
+	
+	for (i = 0; i < a.hauteur; i++){
+		for (j = 0; j < a.largeur; j++){
+			somme.tableau[i][j] = a.tableau[i][j] + b.tableau[i][j];
+		}
+	}
+	return somme;
+}
+
+t_matrice difference_matricielle(t_matrice a, t_matrice b){
+	if(!(a.hauteur == b.hauteur && a.largeur == b.largeur)){
+		perror("Ces matrices ne sont pas de mêmes dimensions");
+		exit(EXIT_FAILURE);
+	}
+	int i,j;
+	t_matrice somme = creer_matrice(a.hauteur, a.largeur);
+	
+	for (i = 0; i < a.hauteur; i++){
+		for (j = 0; j < a.largeur; j++){
+			somme.tableau[i][j] = a.tableau[i][j] - b.tableau[i][j];
+		}
+	}
+	return somme;
+}
+
+double norme_diff_vecteur(t_matrice a, t_matrice b){
+	t_matrice diff = difference_matricielle(a,b);
+	double norme = norme_vecteur(diff);
+	vider_matrice(diff);
+	return norme;
+}
+
+t_matrice copie_matrice(t_matrice a){
+	int i,j;
+	t_matrice b = creer_matrice(a.hauteur,a.largeur);
+	for (i = 0; i < a.hauteur; i++){
+		for (j = 0; j < a.largeur; j++){
+			b.tableau[i][j] = a.tableau[i][j];
+		}
+	}
+	return b;
 }

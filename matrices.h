@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include "tableaux.h"
 
 typedef struct t_matrice{
@@ -16,3 +17,8 @@ void afficher_matrice(t_matrice matrice);
 t_matrice produit_matriciel(t_matrice matrice1, t_matrice matrice2);
 void vider_matrice(t_matrice matrice);
 t_matrice lire_matrice();
+double norme_vecteur(t_matrice vecteur);
+t_matrice somme_matricielle(t_matrice a, t_matrice b);
+t_matrice difference_matricielle(t_matrice a, t_matrice b);
+double norme_diff_vecteur(t_matrice a, t_matrice b);
+t_matrice copie_matrice(t_matrice a);
