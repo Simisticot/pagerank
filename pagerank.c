@@ -3,12 +3,16 @@
 #include <math.h>
 #include "matrices.h"
 #include "tableaux.h"
+#include "ggraphe.h"
 
 void pagerank();
 
 int main(int argc, char const *argv[])
 {
-    pagerank(5,0.001);
+    t_liste_adjacence liste = lire_liste_adjacence("email.txt");
+    printf("longueur : %d\n", liste.longueur);
+    afficher_liste_adjacence(liste);
+    liberer_liste_adjacence(liste);
     return 0;
 }
 
