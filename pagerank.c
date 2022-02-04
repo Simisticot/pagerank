@@ -10,7 +10,6 @@ void pagerank();
 int main(int argc, char const *argv[])
 {
     t_liste_adjacence liste = lire_liste_adjacence("email.txt");
-    printf("longueur : %d\n", liste.longueur);
     afficher_liste_adjacence(liste);
     liberer_liste_adjacence(liste);
     return 0;

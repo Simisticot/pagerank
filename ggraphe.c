@@ -16,10 +16,10 @@ t_noeud initialiser_noeud(int identifiant, int premier_voisin){
 	return noeud;
 }
 
-void ajouter_voisin(t_noeud noeud, int nouveau_voisin){
-	noeud.nb_dest++;
-	noeud.dest = (int*)realloc(noeud.dest, sizeof(int)*noeud.nb_dest);
-	noeud.dest[noeud.nb_dest-1];
+void ajouter_voisin(t_noeud* noeud, int nouveau_voisin){
+	noeud->nb_dest++;
+	noeud->dest = (int*)realloc(noeud->dest, sizeof(int)*noeud->nb_dest);
+	noeud->dest[noeud->nb_dest-1] = nouveau_voisin;
 }
 
 void liberer_noeud(t_noeud noeud){
@@ -71,6 +71,17 @@ int index_noeud(t_liste_adjacence liste, int id){
 	return index;
 }
 
+int voisin_existe(t_noeud* noeud, int voisin){
+	int retour = 0;
+	for(int i = 0; i < noeud->nb_dest; i++){
+		if(noeud->dest[i] == voisin){
+			retour = 1;
+			break;
+		}
+	}
+	return retour;
+}
+
 t_liste_adjacence lire_liste_adjacence(char* nom_fichier){
 	FILE* fichier;
 	fichier = fopen(nom_fichier, "r");
@@ -81,12 +92,13 @@ t_liste_adjacence lire_liste_adjacence(char* nom_fichier){
 	while(fscanf(fichier, "%d %d %d\n", &a, &b, &c)==3){
 		index = index_noeud(liste, a);
 		if(index >= 0){
-			printf("ajout voisin\n");
-			ajouter_voisin(liste.noeud[index], b);
+			//printf("ajout de %d aux voisins de %d\n", b, liste.noeud[index].id);
+			if(!voisin_existe(&liste.noeud[index], b)){
+				ajouter_voisin(&liste.noeud[index], b);
+			}
 		}else{
-			printf("ajout noeud\n");
+			//printf("ajout noeud\n");
 			nouveau = initialiser_noeud(a, b);
-			afficher_noeud(nouveau);
 			ajouter_noeud(&liste, nouveau);
 		}
 	}
