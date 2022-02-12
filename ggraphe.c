@@ -7,12 +7,11 @@ void direbjr(){
 	printf("coucou");
 }
 
-t_noeud initialiser_noeud(int identifiant, int premier_voisin){
+t_noeud initialiser_noeud(int identifiant){
 	t_noeud noeud;
-	noeud.nb_dest = 1;
+	noeud.nb_dest = 0;
 	noeud.id = identifiant;
-	noeud.dest = (int*)malloc(sizeof(int));
-	noeud.dest[0] = premier_voisin;
+	noeud.dest = (int*)malloc(0);
 	return noeud;
 }
 
@@ -98,9 +97,24 @@ t_liste_adjacence lire_liste_adjacence(char* nom_fichier){
 			}
 		}else{
 			//printf("ajout noeud\n");
-			nouveau = initialiser_noeud(a, b);
+			nouveau = initialiser_noeud(a);
+			ajouter_voisin(&nouveau, b);
+			ajouter_noeud(&liste, nouveau);
+		}
+		index = index_noeud(liste, b);
+		if(index < 0){
+			nouveau = initialiser_noeud(b);
 			ajouter_noeud(&liste, nouveau);
 		}
 	}
+	fclose(fichier);
 	return liste;
+}
+
+void trier_liste_adjacence(t_liste_adjacence* liste){
+	qsort(liste->noeud,liste->longueur,sizeof(t_noeud),comparer_noeuds);
+}
+
+int comparer_noeuds(const void* a, const void* b){
+	return ((t_noeud*)a)->id - ((t_noeud*)b)->id;
 }

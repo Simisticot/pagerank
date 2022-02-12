@@ -12,7 +12,7 @@ typedef struct t_liste_adjacence{
 } t_liste_adjacence;
 
 void direbjr();
-t_noeud initialiser_noeud(int identifiant, int premier_voisin);
+t_noeud initialiser_noeud(int identifiant);
 void ajouter_voisin(t_noeud* noeud, int nouveau_voisin);
 void liberer_noeud(t_noeud noeud);
 void afficher_noeud(t_noeud noeud);
@@ -23,3 +23,5 @@ void afficher_liste_adjacence(t_liste_adjacence liste);
 int index_noeud(t_liste_adjacence liste, int id);
 int voisin_existe(t_noeud* noeud, int voisin);
 t_liste_adjacence lire_liste_adjacence(char* nom_fichier);
+void trier_liste_adjacence(t_liste_adjacence* liste);
+int comparer_noeuds(const void* a, const void* b);
