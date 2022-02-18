@@ -5,26 +5,29 @@
 #include "tableaux.h"
 #include "ggraphe.h"
 
-void pagerank(double epsilon, char* nom_fichier);
+void pagerank(double epsilon, float damping, char* nom_fichier);
 t_matrice liste_to_matrice_transition(t_liste_adjacence* liste);
 
 int main(int argc, char const *argv[])
 {
-    pagerank(0.01, "email.txt");
+    pagerank(0.0001, 0.85, "email.txt");
     return 0;
 }
 
-void pagerank(double epsilon, char* nom_fichier){
+void pagerank(double epsilon, float damping, char* nom_fichier){
     t_liste_adjacence liste = lire_liste_adjacence(nom_fichier);
     trier_liste_adjacence(&liste);
     t_matrice m = liste_to_matrice_transition(&liste);
     t_matrice prod = matrice_uniforme(m.hauteur, 1, (float)1/m.hauteur);
     t_matrice r = matrice_uniforme(1,1,1);
+    float jump = (float)((1-damping)/m.hauteur);
     do{
         vider_matrice(r);
         r = copie_matrice(prod);
         vider_matrice(prod);
         prod = produit_matriciel(m,r);
+        produit_matrice_float_en_place(&prod, damping);
+        somme_matrice_float_en_place(&prod, jump);
     }while(norme_diff_vecteur(prod,r) > epsilon);
     afficher_matrice(prod);
     vider_matrice(prod);

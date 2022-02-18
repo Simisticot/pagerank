@@ -160,3 +160,19 @@ t_matrice copie_matrice(t_matrice a){
 	}
 	return b;
 }
+
+void somme_matrice_float_en_place(t_matrice* a, float b){
+	for(int i = 0; i < a->hauteur; i++){
+		for(int j = 0; j < a->largeur; j++){
+			a->tableau[i][j] += b;
+		}
+	}
+}
+
+void produit_matrice_float_en_place(t_matrice* a, float b){
+	for(int i = 0; i < a->hauteur; i++){
+		for(int j = 0; j < a->largeur; j++){
+			a->tableau[i][j] *= b;
+		}
+	}
+}

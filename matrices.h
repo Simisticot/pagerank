@@ -22,3 +22,5 @@ t_matrice somme_matricielle(t_matrice a, t_matrice b);
 t_matrice difference_matricielle(t_matrice a, t_matrice b);
 double norme_diff_vecteur(t_matrice a, t_matrice b);
 t_matrice copie_matrice(t_matrice a);
+void somme_matrice_float_en_place(t_matrice* a, float b);
+void produit_matrice_float_en_place(t_matrice* a, float b);
