@@ -20,7 +20,7 @@ t_liste_adjacence initialiser_liste_adjacence();
 void ajouter_noeud(t_liste_adjacence* liste, t_noeud nouveau_noeud);
 void liberer_liste_adjacence(t_liste_adjacence liste);
 void afficher_liste_adjacence(t_liste_adjacence liste);
-int index_noeud(t_liste_adjacence liste, int id);
+int index_noeud(t_liste_adjacence* liste, int id);
 int voisin_existe(t_noeud* noeud, int voisin);
 t_liste_adjacence lire_liste_adjacence(char* nom_fichier);
 void trier_liste_adjacence(t_liste_adjacence* liste);

@@ -59,10 +59,10 @@ void afficher_liste_adjacence(t_liste_adjacence liste){
 	}
 }
 
-int index_noeud(t_liste_adjacence liste, int id){
+int index_noeud(t_liste_adjacence* liste, int id){
 	int index = -1;
-	for(int i = 0; i < liste.longueur; i++){
-		if(liste.noeud[i].id == id){
+	for(int i = 0; i < liste->longueur; i++){
+		if(liste->noeud[i].id == id){
 			index = i;
 			break;
 		}
@@ -88,8 +88,8 @@ t_liste_adjacence lire_liste_adjacence(char* nom_fichier){
 	int index;
 	t_noeud nouveau;
 	t_liste_adjacence liste = initialiser_liste_adjacence();
-	while(fscanf(fichier, "%d %d %d\n", &a, &b, &c)==3){
-		index = index_noeud(liste, a);
+	while(fscanf(fichier, "%d\t%d\n", &a, &b)==2){
+		index = index_noeud(&liste, a);
 		if(index >= 0){
 			//printf("ajout de %d aux voisins de %d\n", b, liste.noeud[index].id);
 			if(!voisin_existe(&liste.noeud[index], b)){
@@ -101,7 +101,7 @@ t_liste_adjacence lire_liste_adjacence(char* nom_fichier){
 			ajouter_voisin(&nouveau, b);
 			ajouter_noeud(&liste, nouveau);
 		}
-		index = index_noeud(liste, b);
+		index = index_noeud(&liste, b);
 		if(index < 0){
 			nouveau = initialiser_noeud(b);
 			ajouter_noeud(&liste, nouveau);

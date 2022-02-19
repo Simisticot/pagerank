@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
 #include "matrices.h"
 #include "tableaux.h"
 #include "ggraphe.h"
@@ -10,17 +11,36 @@ t_matrice liste_to_matrice_transition(t_liste_adjacence* liste);
 
 int main(int argc, char const *argv[])
 {
-    pagerank(0.0001, 0.85, "email.txt");
+    printf("Entrée\n");
+    clock_t depart,duree;
+    int milisecondes;
+    depart = clock();
+    pagerank(0.000000001, 0.85, "test.txt");
+    duree = clock() - depart;
+    milisecondes = duree * 1000 / CLOCKS_PER_SEC;
+    printf("Temps d'exécution : %d secondes et %d milisecondes\n",milisecondes/1000, milisecondes%1000);
     return 0;
 }
 
 void pagerank(double epsilon, float damping, char* nom_fichier){
+    printf("Lecture du fichier\n");
+    clock_t depart,duree;
+    int milisecondes;
+    depart = clock();
     t_liste_adjacence liste = lire_liste_adjacence(nom_fichier);
+    duree = clock() - depart;
+    milisecondes = duree * 1000 / CLOCKS_PER_SEC;
+    printf("Lecture terminée, tri de la liste d'adjacence\n");
+    printf("Temps de lecture : %d secondes et %d milisecondes\n",milisecondes/1000, milisecondes%1000);
     trier_liste_adjacence(&liste);
+    printf("Tri terminé, construction de la matrice de transition\n");
     t_matrice m = liste_to_matrice_transition(&liste);
+    liberer_liste_adjacence(liste);
+    printf("Matrice de transition construite, début du calcul\n");
     t_matrice prod = matrice_uniforme(m.hauteur, 1, (float)1/m.hauteur);
     t_matrice r = matrice_uniforme(1,1,1);
     float jump = (float)((1-damping)/m.hauteur);
+    int i = 0;
     do{
         vider_matrice(r);
         r = copie_matrice(prod);
@@ -28,12 +48,13 @@ void pagerank(double epsilon, float damping, char* nom_fichier){
         prod = produit_matriciel(m,r);
         produit_matrice_float_en_place(&prod, damping);
         somme_matrice_float_en_place(&prod, jump);
+        i++;
     }while(norme_diff_vecteur(prod,r) > epsilon);
     afficher_matrice(prod);
     vider_matrice(prod);
     vider_matrice(r);
     vider_matrice(m);
-    liberer_liste_adjacence(liste);
+    printf("Calcul terminé en %d itérations\n",i);
 }
 
 t_matrice liste_to_matrice_transition(t_liste_adjacence* liste){

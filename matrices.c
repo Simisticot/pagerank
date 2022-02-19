@@ -64,6 +64,7 @@ void vider_matrice(t_matrice matrice){
 t_matrice lire_matrice(){
 	int hauteur;
 	int largeur;
+	int a;
     char name[] = "adjacence";
     FILE *fichier;
     fichier = fopen(name, "r");
@@ -72,12 +73,12 @@ t_matrice lire_matrice(){
         exit(EXIT_FAILURE);
     }
 
-	fscanf(fichier,"%d,%d\n",&hauteur, &largeur);
+	a = fscanf(fichier,"%d,%d\n",&hauteur, &largeur);
 	t_matrice matrice = creer_matrice(hauteur, largeur);
 
 	for(int i = 0; i < hauteur; i++){
 		for(int j = 0; j < largeur; j++){
-			fscanf(fichier,"%f,",&matrice.tableau[i][j]);
+			a = fscanf(fichier,"%f,",&matrice.tableau[i][j]);
 		}
 	}
 

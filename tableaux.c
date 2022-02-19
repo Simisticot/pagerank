@@ -21,12 +21,13 @@ void afficher_tableau(int hauteur, int largeur, float** tableau){
 }
 
 void saisir_tableau(int hauteur, int largeur, float** tableau){
+	int a;
 	for (int i = 0; i < hauteur; i++)
 	{
 		for (int j = 0; j < largeur; j++)
 		{
 			printf("Saisir le %de reel de la %de ligne\n",i,j );
-			scanf("%f", &tableau[i][j]);
+			a = scanf("%f", &tableau[i][j]);
 		}
 	}
 }
