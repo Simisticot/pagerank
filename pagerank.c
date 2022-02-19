@@ -15,10 +15,10 @@ int main(int argc, char const *argv[])
     clock_t depart,duree;
     int milisecondes;
     depart = clock();
-    pagerank(0.000000001, 0.85, "test.txt");
+    pagerank(0.0000001, 0.85, "data/p2p-Gnutella25.txt");
     duree = clock() - depart;
     milisecondes = duree * 1000 / CLOCKS_PER_SEC;
-    printf("Temps d'exécution : %d secondes et %d milisecondes\n",milisecondes/1000, milisecondes%1000);
+    printf("Temps d'exécution : %d secondes et %d millisecondes\n",milisecondes/1000, milisecondes%1000);
     return 0;
 }
 
@@ -31,7 +31,7 @@ void pagerank(double epsilon, float damping, char* nom_fichier){
     duree = clock() - depart;
     milisecondes = duree * 1000 / CLOCKS_PER_SEC;
     printf("Lecture terminée, tri de la liste d'adjacence\n");
-    printf("Temps de lecture : %d secondes et %d milisecondes\n",milisecondes/1000, milisecondes%1000);
+    printf("Temps de lecture : %d secondes et %d millisecondes\n",milisecondes/1000, milisecondes%1000);
     trier_liste_adjacence(&liste);
     printf("Tri terminé, construction de la matrice de transition\n");
     t_matrice m = liste_to_matrice_transition(&liste);
@@ -50,7 +50,7 @@ void pagerank(double epsilon, float damping, char* nom_fichier){
         somme_matrice_float_en_place(&prod, jump);
         i++;
     }while(norme_diff_vecteur(prod,r) > epsilon);
-    afficher_matrice(prod);
+    //afficher_matrice(prod);
     vider_matrice(prod);
     vider_matrice(r);
     vider_matrice(m);

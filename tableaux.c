@@ -14,7 +14,7 @@ void afficher_tableau(int hauteur, int largeur, float** tableau){
 		printf("(");
 		for (int j = 0; j < largeur; j++)
 		{
-			printf(" %.4f", tableau[i][j]);
+			printf(" %.8f", tableau[i][j]);
 		}
 		printf(" )\n");
 	}
