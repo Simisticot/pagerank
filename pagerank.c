@@ -16,7 +16,7 @@ int main(int argc, char const *argv[])
     clock_t depart,duree;
     int milisecondes;
     depart = clock();
-    pagerank(0.0000001, 0.01, "test.txt");
+    pagerank(0.0000001, 0.85, "test.txt");
     duree = clock() - depart;
     milisecondes = duree * 1000 / CLOCKS_PER_SEC;
     printf("Temps d'exécution : %d secondes et %d millisecondes\n",milisecondes/1000, milisecondes%1000);
