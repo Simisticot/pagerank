@@ -6,61 +6,49 @@
 #include "tableaux.h"
 #include "ggraphe.h"
 
-void pagerank(double epsilon, float damping, char* nom_fichier);
+void pagerank(char* nom_fichier);
 t_matrice liste_to_matrice_transition(t_liste_adjacence* liste);
 int comparer_flottants (const void * a, const void * b);
 
 int main(int argc, char const *argv[])
 {
-    printf("Entrée\n");
-    clock_t depart,duree;
-    int milisecondes;
-    depart = clock();
-    pagerank(0.0000001, 0.85, "data/p2p-Gnutella25.txt");
-    duree = clock() - depart;
-    milisecondes = duree * 1000 / CLOCKS_PER_SEC;
-    printf("Temps d'exécution : %d secondes et %d millisecondes\n",milisecondes/1000, milisecondes%1000);
+    pagerank("data/p2p-Gnutella25.txt");
     return 0;
 }
 
-void pagerank(double epsilon, float damping, char* nom_fichier){
-    printf("Lecture du fichier\n");
+void pagerank(char* nom_fichier){
     clock_t depart,duree;
     int milisecondes;
-    depart = clock();
     t_liste_adjacence liste = lire_liste_adjacence(nom_fichier);
-    duree = clock() - depart;
     milisecondes = duree * 1000 / CLOCKS_PER_SEC;
-    printf("Lecture terminée, tri de la liste d'adjacence\n");
-    printf("Temps de lecture : %d secondes et %d millisecondes\n",milisecondes/1000, milisecondes%1000);
     trier_liste_adjacence(&liste);
-    printf("Tri terminé, construction de la matrice de transition\n");
     t_matrice m = liste_to_matrice_transition(&liste);
     liberer_liste_adjacence(liste);
-    printf("Matrice de transition construite, début du calcul\n");
-    t_matrice prod = matrice_uniforme(m.hauteur, 1, (float)1/m.hauteur);
+    t_matrice prod;
     t_matrice r = matrice_uniforme(1,1,1);
-    float jump = (float)((1-damping)/m.hauteur);
-    t_matrice t;
+    float jump;
     int i = 0;
-    do{
-        vider_matrice(r);
-        r = copie_matrice(prod);
+    float damping;
+    float epsilon = 0.00000000001;
+    for(damping = 0; damping < 1.1; damping += 0.1){
+        jump = (float)((1-damping)/m.hauteur);
+        prod = matrice_uniforme(m.hauteur, 1, (float)1/m.hauteur);
+        depart = clock();
+        do{
+            vider_matrice(r);
+            r = copie_matrice(prod);
+            vider_matrice(prod);
+            prod = produit_matriciel(m,r);
+            produit_matrice_float_en_place(&prod, damping);
+            somme_matrice_float_en_place(&prod, jump);
+        }while(norme_diff_vecteur(prod,r) > epsilon);
+        duree = clock() - depart;
+        milisecondes = duree * 1000 / CLOCKS_PER_SEC;
+        printf("%.2f;%d\n", damping,milisecondes);
         vider_matrice(prod);
-        prod = produit_matriciel(m,r);
-        produit_matrice_float_en_place(&prod, damping);
-        somme_matrice_float_en_place(&prod, jump);
-        i++;
-    }while(norme_diff_vecteur(prod,r) > epsilon);
+    }
     //afficher_matrice(prod);
-    t = transposee(&prod);
-    qsort(t.tableau[0],t.largeur,sizeof(float),comparer_flottants);
-    afficher_matrice(t);
-    vider_matrice(t);
-    vider_matrice(prod);
-    vider_matrice(r);
     vider_matrice(m);
-    printf("Calcul terminé en %d itérations\n",i);
 }
 
 t_matrice liste_to_matrice_transition(t_liste_adjacence* liste){
