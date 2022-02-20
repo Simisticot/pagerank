@@ -8,6 +8,7 @@
 
 void pagerank(double epsilon, float damping, char* nom_fichier);
 t_matrice liste_to_matrice_transition(t_liste_adjacence* liste);
+int comparer_flottants (const void * a, const void * b);
 
 int main(int argc, char const *argv[])
 {
@@ -40,6 +41,7 @@ void pagerank(double epsilon, float damping, char* nom_fichier){
     t_matrice prod = matrice_uniforme(m.hauteur, 1, (float)1/m.hauteur);
     t_matrice r = matrice_uniforme(1,1,1);
     float jump = (float)((1-damping)/m.hauteur);
+    t_matrice t;
     int i = 0;
     do{
         vider_matrice(r);
@@ -51,6 +53,10 @@ void pagerank(double epsilon, float damping, char* nom_fichier){
         i++;
     }while(norme_diff_vecteur(prod,r) > epsilon);
     //afficher_matrice(prod);
+    t = transposee(&prod);
+    qsort(t.tableau[0],t.largeur,sizeof(float),comparer_flottants);
+    afficher_matrice(t);
+    vider_matrice(t);
     vider_matrice(prod);
     vider_matrice(r);
     vider_matrice(m);
@@ -70,4 +76,17 @@ t_matrice liste_to_matrice_transition(t_liste_adjacence* liste){
         }
     }
     return matrice;
+}
+
+int comparer_flottants (const void * a, const void * b) {
+   float comp = ( *(float*)a - *(float*)b );
+   int ret;
+   if(comp > 0){
+       ret = 1;
+   }else if(comp == 0){
+       ret = 0;
+   }else{
+       ret = -1;
+   }
+   return ret;
 }

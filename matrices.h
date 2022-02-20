@@ -24,3 +24,4 @@ double norme_diff_vecteur(t_matrice a, t_matrice b);
 t_matrice copie_matrice(t_matrice a);
 void somme_matrice_float_en_place(t_matrice* a, float b);
 void produit_matrice_float_en_place(t_matrice* a, float b);
+t_matrice transposee(t_matrice* a);

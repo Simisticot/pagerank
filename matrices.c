@@ -177,3 +177,13 @@ void produit_matrice_float_en_place(t_matrice* a, float b){
 		}
 	}
 }
+
+t_matrice transposee(t_matrice* a){
+	t_matrice t = creer_matrice(a->largeur, a->hauteur);
+	for(int i = 0; i < a->hauteur; i++){
+		for(int j = 0; j < a->largeur; j++){
+			t.tableau[j][i] = a->tableau[i][j];
+		}
+	}
+	return t;
+}
