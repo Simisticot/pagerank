@@ -16,7 +16,7 @@ int main(int argc, char const *argv[])
     clock_t depart,duree;
     int milisecondes;
     depart = clock();
-    pagerank(0.0000001, 0.85, "data/p2p-Gnutella25.txt");
+    pagerank(0.0000001, 0.01, "test.txt");
     duree = clock() - depart;
     milisecondes = duree * 1000 / CLOCKS_PER_SEC;
     printf("Temps d'exécution : %d secondes et %d millisecondes\n",milisecondes/1000, milisecondes%1000);
@@ -52,7 +52,7 @@ void pagerank(double epsilon, float damping, char* nom_fichier){
         somme_matrice_float_en_place(&prod, jump);
         i++;
     }while(norme_diff_vecteur(prod,r) > epsilon);
-    //afficher_matrice(prod);
+    afficher_matrice(prod);
     t = transposee(&prod);
     qsort(t.tableau[0],t.largeur,sizeof(float),comparer_flottants);
     afficher_matrice(t);
