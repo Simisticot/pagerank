@@ -27,13 +27,14 @@ void pagerank(char* nom_fichier){
     t_matrice prod;
     t_matrice r = matrice_uniforme(1,1,1);
     float jump;
-    int i = 0;
+    int i;
     float damping;
     float epsilon = 0.00000000001;
     for(damping = 0; damping < 1.1; damping += 0.1){
         jump = (float)((1-damping)/m.hauteur);
         prod = matrice_uniforme(m.hauteur, 1, (float)1/m.hauteur);
         depart = clock();
+        i = 0;
         do{
             vider_matrice(r);
             r = copie_matrice(prod);
@@ -41,10 +42,11 @@ void pagerank(char* nom_fichier){
             prod = produit_matriciel(m,r);
             produit_matrice_float_en_place(&prod, damping);
             somme_matrice_float_en_place(&prod, jump);
+            i++;
         }while(norme_diff_vecteur(prod,r) > epsilon);
         duree = clock() - depart;
         milisecondes = duree * 1000 / CLOCKS_PER_SEC;
-        printf("%.2f;%d\n", damping,milisecondes);
+        printf("%.2f;%d,%d;%d\n", damping,milisecondes/1000,milisecondes%1000,i);
         vider_matrice(prod);
     }
     //afficher_matrice(prod);
