@@ -28,8 +28,8 @@ t_matrice remplir_matrice(t_matrice matrice){
 }
 
 void afficher_matrice(t_matrice matrice){
-	printf("Largeur : %d\n",matrice.largeur);
-	printf("hauteur : %d\n",matrice.hauteur);
+	printf("Matrix width : %d\n",matrice.largeur);
+	printf("Matrix height : %d\n",matrice.hauteur);
 	afficher_tableau(matrice.hauteur, matrice.largeur, matrice.tableau);
 }
 
