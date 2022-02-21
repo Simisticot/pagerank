@@ -28,9 +28,9 @@ void pagerank(char* nom_fichier){
     t_matrice r = matrice_uniforme(1,1,1);
     float jump;
     int i;
-    float damping;
-    float epsilon = 0.00000000001;
-    for(damping = 0; damping < 1.1; damping += 0.1){
+    float damping = 0.85;
+    float epsilon;
+    for(epsilon = 1; epsilon > 0.00000000001; epsilon *= 0.1){
         jump = (float)((1-damping)/m.hauteur);
         prod = matrice_uniforme(m.hauteur, 1, (float)1/m.hauteur);
         depart = clock();
@@ -46,7 +46,7 @@ void pagerank(char* nom_fichier){
         }while(norme_diff_vecteur(prod,r) > epsilon);
         duree = clock() - depart;
         milisecondes = duree * 1000 / CLOCKS_PER_SEC;
-        printf("%.2f;%d,%d;%d\n", damping,milisecondes/1000,milisecondes%1000,i);
+        printf("%.10f;%d,%d;%d\n", epsilon,milisecondes/1000,milisecondes%1000,i);
         vider_matrice(prod);
     }
     //afficher_matrice(prod);
